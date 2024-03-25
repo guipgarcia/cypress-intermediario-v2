@@ -1,4 +1,3 @@
-
 import HomePageElements  from "../pages/home_page";
 const map = new HomePageElements;
 
@@ -36,7 +35,7 @@ Cypress.Commands.add('createNewIssue', issue =>{
     cy.visit(`/${Cypress.env('user_name')}/${issue.project.name}/issues/new`);
 
     cy.get(map.issue_title()).should('be.visible')
-    .type(issue.name).should('have.value', issue.name)
+    .type(issue.title).should('have.value', issue.title)
 
     cy.get(map.issue_description()).should('be.visible')
     .type(issue.description).should('have.value', issue.description)
@@ -44,5 +43,16 @@ Cypress.Commands.add('createNewIssue', issue =>{
     cy.get(map.submit_issue()).should('be.visible')
     .click();
 
-    cy.get(map.issue_created_with_success_message()).should('have.text', issue.name)
+    cy.get(map.issue_created_with_success_message()).should('have.text', issue.title)
+});
+
+Cypress.Commands.add('addLabelToAnIssue', label=>{
+    cy.get(map.edit_label()).click()
+    cy.contains(label.name).click()
+    cy.get('body').click()
+});
+
+Cypress.Commands.add("addMilestoneToAnIssue", milestone =>{
+    cy.get(map.edit_milestone()).should('be.visible').click();
+    cy.contains(milestone.title).click();
 });

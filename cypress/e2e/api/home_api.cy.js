@@ -17,7 +17,7 @@ describe('Home tests via API',()=>{
         });
     });
 
-    it.only('Create an issue via API',()=>{
+    it('Create an issue via API',()=>{
         const issue = {
            title: `issue-${faker.datatype.uuid()}`,
            description: faker.random.words(3),
@@ -32,4 +32,5 @@ describe('Home tests via API',()=>{
             expect(response.body.description).to.equal(issue.description);
         });
     })
+
 });

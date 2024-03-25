@@ -29,5 +29,4 @@ describe('Gitlab login scenarios', options, () => {
   it('Login with empty credentials', () =>{
     cy.loginWithEmptyCredentials();
   });
-
 })

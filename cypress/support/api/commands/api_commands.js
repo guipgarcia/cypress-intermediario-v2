@@ -33,7 +33,6 @@ Cypress.Commands.add('deleteProjectViaApi', ()=>{
 });
 
 Cypress.Commands.add('createIssueViaAPI', issue=>{
-    let id;
     cy.createProjectViaAPI(issue.project).then(response=>
         cy.request({
             method:'POST',
@@ -45,3 +44,32 @@ Cypress.Commands.add('createIssueViaAPI', issue=>{
             headers: {Authorization: accessToken}
     }))
 });
+
+Cypress.Commands.add('createLabelViaAPI', (issue,label)=>{
+    cy.createIssueViaAPI(issue).then(response =>{
+        cy.request({
+            method: "POST",
+            url: `/api/v4/projects/${response.body.project_id}/labels`,
+            body:{
+                name: label.name,
+                color: label.color
+            },
+            headers:{Authorization: accessToken}
+        })
+        cy.visit(`${Cypress.env('user_name')}/${issue.project.name}/issues/${response.body.iid}`)
+    });
+});
+
+Cypress.Commands.add('createMilestoneViaAPI', (issue, milestone) =>{
+    cy.createIssueViaAPI(issue).then(response =>{
+         cy.request({
+            method: "POST",
+            url: `/api/v4/projects/${response.body.project_id}/milestones`,
+            body:{
+                title: milestone.title
+            },
+            headers: {Authorization: accessToken}
+         });   
+         cy.visit(`${Cypress.env('user_name')}/${issue.project.name}/issues/${response.body.iid}`)
+    });
+})
